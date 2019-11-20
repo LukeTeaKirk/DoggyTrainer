@@ -9,6 +9,8 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,7 +21,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    int FoodIndex;
+    EditText FoodTime;
+    Spinner spinner;
+    EditText ParkTime;
+    Button SubmitLeia;
+    Button SubmitLuke;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+        File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator +"BlogData"+File.separator+"MyText2.txt");
+        if(!file2.exists()){
+            try {
+                file2.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
     private void WriteFile(String text){
@@ -60,8 +76,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    private void WriteFile2(String text){
+        File file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator +"BlogData"+File.separator+"MyText2.txt");
+        if(file2.exists()){
+            try {
+                FileWriter fileWriter  = new FileWriter(file2);
+                BufferedWriter bfWriter = new BufferedWriter(fileWriter);
+                bfWriter.write(text);
+                bfWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     private void InitViews(){
-        Spinner spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinner);
         ArrayList<String> arrayList;
         arrayList = new ArrayList<>();
         arrayList.add("Dog Pebbles");//1
@@ -76,13 +105,41 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int FoodIndex = parent.getSelectedItemPosition();
-
-
             }
             @Override
             public void onNothingSelected(AdapterView <?> parent) {
             }
-    });
+
+        });
+        FoodTime = findViewById(R.id.FoodTime);
+        ParkTime = findViewById(R.id.ParkTime);
+        SubmitLeia = findViewById(R.id.LeiaSubmit);
+        SubmitLuke = findViewById(R.id.LukeSubmit);
+        SubmitLeia.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FoodIndex = spinner.getSelectedItemPosition();
+                String FoodStr = FoodTime.getText().toString();
+                String ParkStr = ParkTime.getText().toString();
+                String writestring = FoodIndex + "," + FoodStr + "," + ParkStr + ",";
+                WriteFile(writestring);
+            }
+        });
+        SubmitLuke.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FoodIndex = spinner.getSelectedItemPosition();
+                String FoodStr = FoodTime.getText().toString();
+                String ParkStr = ParkTime.getText().toString();
+                String writestring = FoodIndex + "," + FoodStr + "," + ParkStr + ",";
+                WriteFile2(writestring);
+            }
+        });
+
+
+
+
+
+
+
+
     }
 }
