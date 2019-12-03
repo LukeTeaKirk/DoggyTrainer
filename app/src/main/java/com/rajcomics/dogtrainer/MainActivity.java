@@ -2,6 +2,7 @@ package com.rajcomics.dogtrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -21,6 +22,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    boolean flag1;
+    boolean flag2;
+    boolean flag3;
     int FoodIndex;
     EditText FoodTime;
     Spinner spinner;
@@ -122,15 +126,35 @@ public class MainActivity extends AppCompatActivity {
                 String ParkStr = ParkTime.getText().toString();
                 String writestring = FoodIndex + "," + FoodStr + "," + ParkStr + ",";
                 WriteFile(writestring);
+                Context context = getApplicationContext();
+                CharSequence text = "Data Logged!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         });
         SubmitLuke.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 FoodIndex = spinner.getSelectedItemPosition();
                 String FoodStr = FoodTime.getText().toString();
+                if(FoodStr.length() == 4){
+                    flag1 = true;
+                }
                 String ParkStr = ParkTime.getText().toString();
+                if(ParkStr.length() == 4){
+                    flag2 = true;
+                }
                 String writestring = FoodIndex + "," + FoodStr + "," + ParkStr + ",";
-                WriteFile2(writestring);
+                if(flag1&flag2){
+                   WriteFile2(writestring);
+                }
+                Context context = getApplicationContext();
+                CharSequence text = "Data Logged!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
         });
 
